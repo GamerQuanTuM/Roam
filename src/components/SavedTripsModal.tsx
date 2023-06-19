@@ -8,22 +8,30 @@ interface Props {
   isOpen: boolean;
   handleModal: () => void;
   line: string[];
+  flag: boolean;
 }
 
-const SavedTripsModal: FC<Props> = ({ handleModal, isOpen, line }) => {
+const SavedTripsModal: FC<Props> = ({ handleModal, isOpen, line, flag }) => {
   const [savedTripsImage, setSavedTripsImage] = useState("");
+  const [trigger, setTrigger] = useState(false);
 
   useEffect(() => {
-    const imageUrlString = localStorage.getItem("imageUrl");
-    const imageUrl = imageUrlString && JSON.parse(imageUrlString);
-    if (!imageUrl) return;
-    const imageUrlValues: any = Object?.values(imageUrl);
-    if (imageUrlValues.length === 0) return;
-    const imageUrlKeys: string | null = imageUrlValues[1] as string;
-    setSavedTripsImage(imageUrlKeys);
-  }, [savedTripsImage]);
+    if(isOpen) {
+      const imageUrlString = localStorage.getItem("imageUrl");
+      const imageUrl = imageUrlString && JSON.parse(imageUrlString);
+      console.log('saved trip-> ', imageUrl && Object.values(imageUrl)[0]);
+    }
+    // if (!imageUrl) return;
+    // const imageUrlValues: any = Object?.values(imageUrl);
+    // if (imageUrlValues.length === 0) return;
+    // const imageUrlKeys: string | null = imageUrlValues[1] as string;
+    // setSavedTripsImage(imageUrlKeys);
+  }, [flag, isOpen]);
 
-  console.log("SavedTripsss -->", savedTripsImage);
+  useEffect(() => {
+  }, [])
+  
+  // console.log("SavedTripsss -->", savedTripsImage);
 
   return (
     <>

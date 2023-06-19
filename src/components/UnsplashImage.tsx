@@ -64,7 +64,6 @@ export default function Images({ locationName, setFlag }: Props) {
         const place_id = results.candidates[0].place_id;
         locationRef.current = place_id;
         storedPlaceIdObj[locationName] = place_id;                // setting 
-        if(Object.keys(storedPlaceIdObj).length === size) setFlag(true);
         localStorage.setItem("imageMapUrl", JSON.stringify(storedPlaceIdObj));
 
         if (results.candidates[0]?.hasOwnProperty("photos")) {
@@ -86,6 +85,7 @@ export default function Images({ locationName, setFlag }: Props) {
           setImageUrl(url);
         }
       }
+      if(Object.keys(storedPlaceIdObj).length === size) setFlag(true);
 
     };
     fetchImage();

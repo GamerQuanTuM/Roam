@@ -162,7 +162,7 @@ const Itinerary: FC = () => {
       itineraryArray.shift();
       setItinerary(itineraryArray);
     }
-  }, [nextResponse]);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("currentPathname", JSON.stringify(pathname));
@@ -264,7 +264,7 @@ const Itinerary: FC = () => {
               );
             })}
           </div>
-          <SavedTripsModal isOpen={isOpen} handleModal={toggleModal} line={itinerary} />
+          <SavedTripsModal isOpen={isOpen} handleModal={toggleModal} line={itinerary} flag={flag} />
         </div>
       </ClientOnly>
     </>
