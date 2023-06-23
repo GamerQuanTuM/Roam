@@ -1,6 +1,6 @@
 "use client";
 import { FC } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IoLocationSharp } from "react-icons/io5";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { FaHome } from "react-icons/fa";
@@ -22,11 +22,17 @@ type Props = {
 };
 
 const Card: FC<Props> = ({ line, dateObj, ParentIndex, setFlag, flag }) => {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState<boolean>(true);
+  const [cityName, setCityName] = useState<string>('');
 
   const handleClick = () => {
     setShow(!show);
   };
+
+  useEffect(()=> {
+    const cityName = line.split('\n')[0];
+    setCityName(cityName);
+  }, [])
 
   const renderHotelAndArea = (show: boolean) => {
     const areaToStayRegex: RegExp = /City\/Area to stay at:\s*(.*)/;
@@ -236,6 +242,7 @@ const Card: FC<Props> = ({ line, dateObj, ParentIndex, setFlag, flag }) => {
                     <Images
                       setFlag={setFlag}
                       locationName={line.split(": ")[0].split(/\.(.+)/)[1]}
+                      cityName={cityName}
                     />
                   </div>
                 </div>

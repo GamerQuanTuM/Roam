@@ -8,9 +8,10 @@ import { axiosInstance } from "@/libs/config";
 type Props = {
   locationName: string;
   setFlag: any;
+  cityName: string;
 };
 
-export default function Images({ locationName, setFlag }: Props) {
+export default function Images({ locationName, setFlag, cityName }: Props) {
   const [imageUrl, setImageUrl] = useState("");
   const locationRef = useRef(locationName);
 
@@ -38,7 +39,7 @@ export default function Images({ locationName, setFlag }: Props) {
       
       const locationString = localStorage.getItem("location"); // geting the location value from localstorage
       const location = locationString !== null ? JSON.parse(locationString) : null;
-      const specificLocationName: string = `${locationName} ${location}`;
+      const specificLocationName: string = `${locationName}${cityName}${location}`;
       const placeName: string = specificLocationName.replace(/ /g, "%20");
 
       const imageUrlObjString = localStorage.getItem("imageUrl"); // geting the imageMapUrl from localstorage

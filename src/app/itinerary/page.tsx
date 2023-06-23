@@ -139,6 +139,7 @@ const Itinerary: FC = () => {
 
   useEffect(() => {
     const data = localStorage.getItem("ItineraryResponse");
+    // console.log(data);
     const locationString = localStorage.getItem("location");
     const location =
       locationString !== null ? JSON.parse(locationString) : null;
@@ -156,7 +157,7 @@ const Itinerary: FC = () => {
       setItinerary(itineraryArray);
     } else {
       const parsedData = JSON.parse(data);
-      console.log(parsedData);
+      // console.log(parsedData);
       setNextResponseInput(parsedData);
       const itineraryArray = parsedData.split(/Day \d+:/);
       itineraryArray.shift();

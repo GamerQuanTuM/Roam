@@ -6,7 +6,7 @@ type props = {
 };
 
 export default function Distance({ locationName }: props) {
-  const [dist, setDist] = useState<string>("0");
+  const [dist, setDist] = useState<number>(0);
   const [flag, setFlag] = useState<boolean>(true);
 
   const baseUrl = `https://maps.googleapis.com/maps/api/distancematrix/json?`;
@@ -44,16 +44,15 @@ export default function Distance({ locationName }: props) {
 
       if (
         element.hasOwnProperty("distance") &&
-        element.distance.text !== "1 m"
+        element.distance.value > 160
       ) {
-        const kms = element.distance.text;
-        const km = kms.split(/\s+/);
-        setDist(km[0]);
+        const meter = element.distance.value;
+        setDist(meter / 1000);
         // console.log(
-        //   `${distance[index]} -> ${distance[index + 1]}, `,
-        //   distanceResponse.data
+        //   `${distance[index]} -> ${distance[index + 1]},(km) `,
+        //   element
         // );
-      } else {
+      }else {
         //Walking Distance
         const distanceResponse = await axios.post(
           "/api/google-places-walking-distance-api",
@@ -67,14 +66,13 @@ export default function Distance({ locationName }: props) {
         const element = distanceResponse.data.rows[0].elements[0];
 
         if (element.hasOwnProperty("distance")) {
-          const kms = element.distance.text;
-          const km = kms.split(/\s+/);
-          setDist(km[0]);
+          const meter = element.distance.value;
+          setDist(meter / 1000);
+          // console.log(
+          //   `${distance[index]} -> ${distance[index + 1]},(meter) `,
+          //   element
+          //   );
         }
-        // console.log(
-        //   `${distance[index]} -> ${distance[index + 1]}, `,
-        //   distanceResponse.data
-        // );
       }
     };
 
@@ -85,7 +83,7 @@ export default function Distance({ locationName }: props) {
     <>
       {flag ? (
         <div className="text-[16px] font-[400] non-italic font-Roboto tracking-[0.25px]">
-          {(Number(dist) / 1.609).toFixed(1)} miles to next stop
+          {(dist / 1.609).toFixed(1)} miles to next stop
         </div>
       ) : (
         <div>end</div>
