@@ -4,7 +4,7 @@ import { toast } from "react-hot-toast";
 
 const handleMapClick = async (locationName: string) => {
   const placeIdObj = JSON.parse(localStorage.getItem("imageMapUrl")!);
-  const place_id = placeIdObj[locationName];
+  const place_id = placeIdObj[locationName];// " "
   const response = await axiosInstance.post("/api/google-places-maps-api", {
     place_id,
   });

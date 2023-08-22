@@ -60,29 +60,22 @@ To suggest destination, you will ask relevant questions about the user's travel 
 
 Based on the questions below and suggset a destination to travel based on these preferences.
 
-Input:  Generate a 4-10 days explore destinations for {location} based on the following instructions:
-
-These are the question user will provide.
-
-1.Where do you currently live?
-2.How many days do you have available for your vacation?
-3.What kind of vacation are you looking for?
-4.Are you open to international travel?
-5.Are you willing to visit multiple cities or places that may require interconnecting flights or driving?
-6.Do you have any specific requirements or preferences?
-7.In which month do you plan to travel?
-
-
-Instructions: (Please replace the placeholder text with actual details). You need to suggest a destinations in these format.
-
-1. [Places name can be one or multiple]: [Detailed desscription in about 500 words]
-2. [Places name can be one or multiple]: [Detailed desscription in about 500 words]
-3. [Places name can be one or multiple]: [Detailed desscription in about 500 words]
-.
-.
-.
-.
-{can be upto any number of places}
+"I have only {number of days}-day for my vacation and would like to start my travel from {location}, which is where I live. Consider the number of days to travel from the starting point to the location and back, and specify how I will travel to and from this place in your suggestion. I want my trip to be focused completely on deserts as well as forests, and I'm open to visiting multiple places in the country I will be visiting. I do not want to include international travel, and I plan to travel in July (consider the weather in this month). Make sure that there isn't a ton of driving/travelling that needs to be done, and the trip is relaxed. Can you suggest some itineraries that fits these parameters?"
+ 
+If a place doesn't meet the parameters, or if time to visit a place is too short, don't show it as a suggestion. If there isn't a single place that meets the parameters, only show this message "I have no suggestions".
+ 
+ 
+The answer needs to be in this format:
+ 
+Suggestion 1: Trip Name
+ 
+Days A-B: Names of main location(s) to see.
+Paragraph description of what to do and see
+ 
+Days C-D: Names of main location(s) to see.
+Paragraph description of what to do and see and so on for the request duration of the trip.
+ 
+Same format for other suggestions that meet the parameters.
 
 
 `

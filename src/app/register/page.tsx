@@ -6,9 +6,13 @@ import { SiFacebook } from "react-icons/si";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { doc, setDoc } from "firebase/firestore";
 import { toast } from "react-hot-toast";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  updateProfile,
+} from "firebase/auth";
 import ClientOnly from "@/components/ClientOnly";
-import { auth, db } from "@/libs/firebase";
+import { auth, db, googleAuthProvider } from "@/libs/firebase";
 
 type UserProps = {
   uid: string;
@@ -56,6 +60,25 @@ const Register: FC = () => {
         name: "",
         password: "",
       });
+    } catch (error: any) {
+      console.log("Error creating an account", error);
+    }
+  };
+
+  const googleSignIn = async () => {
+    try {
+      const res = await signInWithPopup(auth, googleAuthProvider);
+
+      const userRef = doc(db, "users", res.user.uid);
+
+      const userDetails: UserProps = {
+        uid: res.user.uid,
+        email: res.user.email as string,
+        displayName: res.user.displayName as string,
+      };
+      await setDoc(userRef, userDetails);
+      router.push(currentPath);
+      toast.success("Signed In With Google");
     } catch (error: any) {
       console.log("Error creating an account", error);
     }
@@ -119,7 +142,7 @@ const Register: FC = () => {
           SIGN UP
         </button>
 
-        {/* <div className="flex gap-5 items-center">
+        <div className="flex gap-5 items-center">
           <div
             className=" w-[147px] h-0"
             style={{
@@ -133,12 +156,15 @@ const Register: FC = () => {
               border: "1px solid rgba(0, 0, 0, 0.6)",
             }}
           />
-        </div> */}
+        </div>
 
-        {/* <div className="w-[410px] h-[48px] rounded-3xl shadow-lg border-1 flex items-center justify-center gap-4 cursor-pointer">
+        <div
+          className="w-[410px] h-[48px] rounded-3xl shadow-lg border-1 flex items-center justify-center gap-4 cursor-pointer"
+          onClick={googleSignIn}
+        >
           <FcGoogle size={25} />
           <h1 className="text-xl">Continue with Google</h1>
-        </div> */}
+        </div>
 
         {/* <div className="w-[410px] h-[48px] rounded-3xl flex items-center justify-center gap-4 bg-[#1877F2] cursor-pointer">
           <SiFacebook size={25} color="white" />

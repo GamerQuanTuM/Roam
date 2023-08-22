@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Loader from "@/components/Loading";
 import { exploreDestinationPrompt } from "@/constants/prompts";
 import { axiosInstance } from "@/libs/config";
+import axios from "axios";
 
 const TripType = ({
   type,
@@ -128,17 +129,18 @@ const ExploreDestinations: FC = () => {
   const prompt = exploreDestinationPrompt(
     origin,
     parseInt(days),
-    tripDetailsInput,
-    tripTypeInput,
+    // tripDetailsInput,
+    // tripTypeInput,
     months
   );
+
 
   const onFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       setLoading(true);
-      const response = await axiosInstance.post(
+      const response = await axios.post(
         "/api/explore-destinations-api",
         {
           prompt,
@@ -146,6 +148,7 @@ const ExploreDestinations: FC = () => {
       );
       setLoading(false);
       setResponse(response.data);
+      console.log(response.data)
       //router.push("destination")
     } catch (error: any) {
       setLoading(false);
@@ -171,10 +174,7 @@ const ExploreDestinations: FC = () => {
   return (
     <ClientOnly>
       <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          toast.error("Coming Soon!!!");
-        }}
+        onSubmit={onFormSubmit}
         className="flex flex-col items-center justify-center h-full w-full gap-[88px]"
       >
         <div className="h-[40px] ">

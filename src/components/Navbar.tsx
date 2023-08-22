@@ -85,8 +85,7 @@ const Navbar: FC = () => {
                     ? "text-black underline font-bold"
                     : "text-black"
                 }`}
-                // onClick={() => router.push("/explore-destinations")}
-                onClick={() => toast.error("Coming Soon")}
+                onClick={() => router.push("/explore-destinations")}
               >
                 Explore Destinations
               </h4>

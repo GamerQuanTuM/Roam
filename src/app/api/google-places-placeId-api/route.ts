@@ -17,6 +17,7 @@ export async function POST(req: Request) {
     );
 
     const results = await response.data;
+    console.log(results)
     return cors(
         req,
         new Response(JSON.stringify(results), {

@@ -5,9 +5,16 @@ import { FcGoogle } from "react-icons/fc";
 import { SiFacebook } from "react-icons/si";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { toast } from "react-hot-toast";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import ClientOnly from "@/components/ClientOnly";
-import { auth } from "@/libs/firebase";
+import { auth, db, googleAuthProvider } from "@/libs/firebase";
+
+type UserProps = {
+  uid: string;
+  email: string;
+  displayName: string;
+};
 
 const Login: FC = () => {
   const router = useRouter();
@@ -35,6 +42,25 @@ const Login: FC = () => {
     const parsedPathname = currentPathname ? JSON.parse(currentPathname) : null;
     setCurrentPath(parsedPathname);
   }, []);
+
+  const googleSignIn = async () => {
+    try {
+      const res = await signInWithPopup(auth, googleAuthProvider);
+
+      const userRef = doc(db, "users", res.user.uid);
+
+      const userDetails: UserProps = {
+        uid: res.user.uid,
+        email: res.user.email as string,
+        displayName: res.user.displayName as string,
+      };
+      await setDoc(userRef, userDetails);
+      router.push(currentPath);
+      toast.success("Signed In With Google");
+    } catch (error: any) {
+      console.log("Error creating an account", error);
+    }
+  };
 
   return (
     <ClientOnly>
@@ -81,7 +107,7 @@ const Login: FC = () => {
           LOG IN
         </button>
 
-        {/* <div className="flex gap-5 items-center">
+        <div className="flex gap-5 items-center">
           <div
             className=" w-[147px] h-0"
             style={{
@@ -95,12 +121,15 @@ const Login: FC = () => {
               border: "1px solid rgba(0, 0, 0, 0.6)",
             }}
           />
-        </div> */}
+        </div>
 
-        {/* <div className="w-[410px] h-[48px] rounded-3xl shadow-lg border-1 flex items-center justify-center gap-4 cursor-pointer">
+        <div
+          className="w-[410px] h-[48px] rounded-3xl shadow-lg border-1 flex items-center justify-center gap-4 cursor-pointer"
+          onClick={googleSignIn}
+        >
           <FcGoogle size={25} />
           <h1 className="text-xl">Continue with Google</h1>
-        </div> */}
+        </div>
 
         {/* <div className="w-[410px] h-[48px] rounded-3xl flex items-center justify-center gap-4 bg-[#1877F2] cursor-pointer">
           <SiFacebook size={25} color="white" />
